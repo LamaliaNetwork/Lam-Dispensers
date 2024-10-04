@@ -10,20 +10,15 @@ public final class LamDispensers extends SimplePlugin {
     private YskLib yskLib;
     @Getter
     private YskLibWrapper wrapper;
-    private DispenserPlacementHandler handler;
 
     @Override
     public void onPluginStart() {
         yskLib = (YskLib) Bukkit.getPluginManager().getPlugin("YskLib");
         wrapper = new YskLibWrapper(this, yskLib);
 
-        handler = new DispenserPlacementHandler(this);
-        getServer().getPluginManager().registerEvents(handler, this);
-
-        // Initialize existing dispensers in loaded chunks
-        getServer().getScheduler().runTask(this, () -> {
-            handler.initializeExistingDispensers();
-        });
+        // Register the new DispenserPlacementHandler
+        DispenserPlacementHandler handler = new DispenserPlacementHandler(this);
+        registerEvents(handler);
 
 
         wrapper.logDebug("LamDispensers enabled!");
